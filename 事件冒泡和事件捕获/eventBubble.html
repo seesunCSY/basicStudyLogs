@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>事件冒泡</title>
+	<style type="text/css">
+		#parent{
+			width: 300px;
+			height: 300px;
+			border: 10px solid red;
+		}
+		#child{
+			width: 100px;
+			height: 100px;
+			border: 10px solid green;
+		}
+		#child1{
+			width: 100px;
+			height: 100px;
+			border: 10px solid blue;
+		}
+	</style>
+</head>
+<body>
+	<ul id="parent">
+		<li id="child"></li>
+		<li id="child1"></li>
+	</ul>
+</body>
+</html>
+<!--事件冒泡，事件被触发，触发顺序自内向外,默认是冒泡-->
+<script type="text/javascript">
+	document.querySelector('#parent').addEventListener("click", function(e){
+		alert("parent事件被触发,"+this.id);
+	})
+	lis = document.getElementsByTagName("li");
+	for(var i = 0; i < lis.length; i++){
+		lis[i].addEventListener("click", function(e){
+			alert("child事件被触发,"+this.id);
+		})
+	}
+</script>
+<!--事件捕获，事件被触发，触发顺序自外向内,点击子项，先触发外部，再触发内部
+<script type="text/javascript">
+	document.querySelector('#parent').addEventListener("click", function(e){
+		alert("parent事件被触发,"+this.id);
+	},true)
+	lis = document.getElementsByTagName("li");
+	for(var i = 0; i < lis.length; i++){
+		lis[i].addEventListener("click", function(e){
+			alert("child事件被触发,"+this.id);
+		}, true)
+	}
+</script>-->
