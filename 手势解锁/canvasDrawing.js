@@ -74,8 +74,8 @@ let lineCanvas = circleCanvas.cloneNode(true); //画固定的线
 let moveCanvas = circleCanvas.cloneNode(true); //画不固定的线  
 
 container.appendChild(lineCanvas);
-container.appendChild(circleCanvas);
 container.appendChild(moveCanvas);
+container.appendChild(circleCanvas);
 
 
 let circleCtx = circleCanvas.getContext('2d'),
@@ -103,7 +103,7 @@ for(let i = 1; i <= n; i++){
 }
 
 
-//画线（先画点，再画线）
+//画（先画点，再画线）
 let records = [];
 let realAction = evt => {
 	let {clientX, clientY} = evt.changedTouches[0];
@@ -114,7 +114,7 @@ let realAction = evt => {
 			y0 = point.y;
 
 		if(distance(point, touchPoint) < touchRadius){
-			// drawSolidCircle(circleCtx, hollowColor, x0, y0, hollowRadius);
+			drawSolidCircle(circleCtx, '#fff', x0, y0, hollowRadius);
 			drawSolidCircle(circleCtx, hollowColor, x0, y0, solidRadius);
 			drawHollowCircle(circleCtx, hollowColor, x0, y0, hollowRadius);
 			if(records.length){
@@ -141,6 +141,16 @@ let realAction = evt => {
     };
 
 
-moveCanvas.addEventListener('touchstart', realAction);
-moveCanvas.addEventListener('touchmove', realAction);
+circleCanvas.addEventListener('touchstart', realAction);
+circleCanvas.addEventListener('touchmove', realAction);
 
+//画完之后
+let done = evt => {
+	moveCtx.clearRect(0, 0, moveCanvas.width, moveCanvas.height);
+    if(!records.length) return;
+
+    circleCanvas.removeEventListener('touchstart', realAction);
+    circleCanvas.removeEventListener('touchmove', realAction);
+    // document.removeEventListener('touchend', done);
+}
+document.addEventListener('touchend', done);
